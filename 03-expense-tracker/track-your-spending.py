@@ -71,22 +71,23 @@ class ExpensesDatabase:
 class CommandsHandler:
     def __init__(self, db: ExpensesDatabase):
         self.db = db
+        self.curr_data = self.db.load_file()
+        self.expenses = self.curr_data['expenses']
 
     def add_expense(self, args):
         new_data = {
-            "id": self._assign_id(),
             "name": args.name,
             "amount": args.amount,
-            "created_at": self._get_current_date(),
-            "updated_at": '',
+            "id": self._assign_id(),
+            "created": self._get_current_date(),
+            "updated": '',
         }
-        curr_data = self.db.load_file()
-        curr_data["expenses"].append(new_data)
-        self.db.save_file(curr_data)
+        self.expenses.append(new_data)
+        self.db.save_file(self.curr_data)
+        tabulate_data(self.expenses)
 
     def update_expense(self, args):
-        curr_data = self.db.load_file()
-        is_found, exp_index = self._is_id_found(args, curr_data)
+        is_found, exp_index = self._is_id_found(args)
 
         if not is_found:
             print('invalid id')
@@ -96,31 +97,28 @@ class CommandsHandler:
             print("Please provide either -n/--name, -a/--amount, or both")
             exit(0)
 
-        expenses = curr_data['expenses']
         if not args.name is None:
-            expenses[exp_index]['name'] = args.name
+            self.expenses[exp_index]['name'] = args.name
         if not args.amount is None:
-            expenses[exp_index]['amount'] = args.amount
-        expenses[exp_index]['updated_at'] = self._get_current_date()
+            self.expenses[exp_index]['amount'] = args.amount
+        self.expenses[exp_index]['updated'] = self._get_current_date()
 
-        self.db.save_file(curr_data)
+        self.db.save_file(self.curr_data)
+        tabulate_data(self.expenses)
 
     def delete_expense(self, args):
-        curr_data = self.db.load_file()
-        is_found, exp_index = self._is_id_found(args, curr_data)
+        is_found, exp_index = self._is_id_found(args)
 
         if not is_found:
             print('invalid id')
             exit(0)
 
-        del curr_data['expenses'][exp_index]
-        self.db.save_file(curr_data)
+        del self.expenses[exp_index]
+        self.db.save_file(self.curr_data)
+        tabulate_data(self.expenses)
 
     def view_expense(self, args):
-        curr_data = self.db.load_file()
-
-        expenses = curr_data['expenses']
-        inverted_expenses = expenses[::-1]
+        inverted_expenses = self.expenses[::-1]
 
         if args.limit is not None and args.limit <= 0:
             print('invalid int: use at least 1 or more')
@@ -128,25 +126,23 @@ class CommandsHandler:
 
         if args.limit is not None:
             if args.newest:
-                print(inverted_expenses[:args.limit])
+                tabulate_data(inverted_expenses[:args.limit])
                 return
             else:
-                print(expenses[:args.limit])
+                tabulate_data(self.expenses[:args.limit])
                 return
         if args.newest:
-            print(inverted_expenses)
+            tabulate_data(inverted_expenses)
             return
 
-        print(expenses)
+        tabulate_data(self.expenses)
         return
 
     def summary_expense(self, args):
-        curr_data = self.db.load_file()
-        expenses = curr_data['expenses']
 
         total_expense = 0
         currency = 'RM'
-        for exp in expenses:
+        for exp in self.expenses:
             total_expense = total_expense + exp['amount']
 
         rounded_total = round(total_expense, 2)
@@ -154,10 +150,9 @@ class CommandsHandler:
         print(f'Total expense: {currency}{rounded_total}')
 
     def _assign_id(self):
-        curr_data = self.db.load_file()
-        next_id = int(curr_data['id_counter'] + 1)
-        curr_data['id_counter'] = next_id
-        self.db.save_file(curr_data)
+        next_id = int(self.curr_data['id_counter'] + 1)
+        self.curr_data['id_counter'] = next_id
+        self.db.save_file(self.curr_data)
         return next_id
     
     def _get_current_date(self):
@@ -165,24 +160,60 @@ class CommandsHandler:
         formatted_date = today.strftime("%I:%M%p, %d %B %Y")
         return formatted_date
     
-    def _is_id_found(self, args, curr_data):
-        expenses = curr_data['expenses']
+    def _is_id_found(self, args):
 
         exp_index = None
         is_found = False
-        for index, exp in enumerate(expenses):
+        for index, exp in enumerate(self.expenses):
             if exp['id'] == args.id:
                 is_found = True
                 exp_index = index      
 
         return [is_found, exp_index]
 
-class DataVisualizer:
-    pass
+def tabulate_data(data):
+    if len(data) <= 0:
+        print('No expenses yet')
+        return
 
+    print("\n") # For top space
+
+    headers = ["name", "amount", "id", "created", "updated"]
+
+    # Calculate column widths
+    col_widths = {}
+
+    for header in headers:
+        max_width = len(header)
+        for row in data:
+            max_width = max(max_width, len(str(row[header])))
+        col_widths[header] = max_width
+
+    # Print header
+    header_row = " | ".join(
+        header.upper().center(col_widths[header])
+        for header in headers
+    )
+    print(header_row)
+
+    # Print separator
+    separator = "-+-".join(
+        "-" * col_widths[header]
+        for header in headers
+    )
+    print(separator)
+
+    # Print rows
+    for row in data:
+        row_line = " | ".join(
+            str(row[header]).ljust(col_widths[header])
+            for header in headers
+        )
+        print(row_line)  
+
+    print("\n") # For bottom space
 
 def main():
-    dv = DataVisualizer()
     ed = ExpensesDatabase()
     ch = CommandsHandler(ed)
     parser = buildParser(ch)
