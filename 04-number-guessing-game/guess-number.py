@@ -51,18 +51,10 @@ def get_computer_number():
 def start_game(difficulty):
 
     modes = {
-        'easy': {
-            'chances': 20,
-        },
-        'medium': {
-            'chances': 10,
-        },
-        'hard': {
-            'chances': 5,
-        },
-        'infinity': {
-            'chances': None,
-        },
+        'easy': {'chances': 20},
+        'medium': {'chances': 10},
+        'hard': {'chances': 5},
+        'infinity': {'chances': None},
     }
     user_chances = modes[difficulty]['chances']
     user_chances_count = 0
@@ -73,76 +65,14 @@ def start_game(difficulty):
                           
             DIFFICULTY MODE: {difficulty.upper()}
             You have {user_chances or "∞"} chances to guess 5 numbers
-    """))
-    
-    while True:
-        if difficulty == 'infinity':
-            print(f'    ROUND: {round_count}/∞ | CHANCES USED: {user_chances_count}/∞')
-        else:
-            print(f'    ROUND: {round_count}/5 | CHANCES LEFT: {user_chances - user_chances_count}/{user_chances}')
-
-        computer_num = get_computer_number()
-        user_input = input('    >> ',)
-
-        if user_input == 'quit':
-            print('\n')
-
-            if difficulty == 'infinity':
-                print('    Quitting mid game. Generating results...\n')
-                time.sleep(2)
-                print(dedent(f"""
-                    ----------------------------------------------------------------------------
-                             
-                        Chances used: {user_chances_count} out of ∞
-                        Number guessed: {round_count - 1} out of ∞
-
-                        Returning to main menu...
-                """))
-                time.sleep(5)
-                return
             
-            print('    Quitting mid game. Generating results...\n')
-            time.sleep(2)
-            print(dedent(f"""
-                ----------------------------------------------------------------------------
-                            
-                    Chances used: {user_chances_count} out of {user_chances}
-                    Number guessed: {round_count - 1} out of 5
+            >> Stuck? Type 'hint' to get clue <<
+    """))
 
-                    Returning to main menu...
-            """))
-            time.sleep(5)
-            return
-
-        try:
-            user_num = int(user_input)
-        except ValueError:
-            print('    Invalid value: Please choose a number between 1 and 100\n')
-            continue            
-
-        if difficulty == 'infinity':
-            if user_num == computer_num:
-                user_chances_count += 1
-                round_count += 1
-                print('    WIN!')
-                print('\n')
-                continue
-            else:
-                user_chances_count +=1
-                print('    LOSE!')
-                print('\n')
-                continue
-                
-        if user_num == computer_num:
-            user_chances_count += 1
-            round_count += 1
-            print('    WIN!')
-            print('\n')
-        else:
-            user_chances_count += 1
-            print('    LOSE!')
-            print('\n')
-
+    while True:
+        computer_num = get_computer_number()
+        print(computer_num)
+        
         if (user_chances_count == user_chances) and (round_count > 5):
             print(dedent("""
                 ----------------------------------------------------------------------------
@@ -157,7 +87,7 @@ def start_game(difficulty):
         if user_chances_count == user_chances:
             print(dedent(f"""
                 ----------------------------------------------------------------------------
-                         
+                        
                     Game over. You have used all your chances to guess
                     You have guessed {round_count - 1} out of 5 number correctly
 
@@ -165,11 +95,11 @@ def start_game(difficulty):
             """))
             time.sleep(5)
             return
-        
+
         if round_count > 5:
             print(dedent(f"""
                 ----------------------------------------------------------------------------
-                         
+                        
                     Wonderful. You have guess all 5 numbers correctly
                     You have used {user_chances_count} out of {user_chances} chances to guess
 
@@ -177,6 +107,93 @@ def start_game(difficulty):
             """))
             time.sleep(5)
             return
+        
+        while True:
+            if difficulty == 'infinity':
+                print(f'    ROUND: {round_count}/∞ | CHANCES USED: {user_chances_count}/∞')
+            else:
+                print(f'    ROUND: {round_count}/5 | CHANCES LEFT: {user_chances - user_chances_count}/{user_chances}')
+
+            user_input = input('    >> ',)
+
+            if user_input == 'quit':
+                print('\n')
+
+                if difficulty == 'infinity':
+                    print('    Quitting mid game. Generating results...\n')
+                    time.sleep(2)
+                    print(dedent(f"""
+                        ----------------------------------------------------------------------------
+                                
+                            Chances used: {user_chances_count} out of ∞
+                            Number guessed: {round_count - 1} out of ∞
+
+                            Returning to main menu...
+                    """))
+                    time.sleep(5)
+                    return
+                
+                print('    Quitting mid game. Generating results...\n')
+                time.sleep(2)
+                print(dedent(f"""
+                    ----------------------------------------------------------------------------
+                                
+                        Chances used: {user_chances_count} out of {user_chances}
+                        Number guessed: {round_count - 1} out of 5
+
+                        Returning to main menu...
+                """))
+                time.sleep(5)
+                return
+            
+            if user_input == 'hint':
+                if computer_num == 100:
+                    print('    The number is the max number that you can guess\n')
+                    continue
+                elif 0 <= computer_num <= 9:
+                    print('    The number is single digit\n')
+                    continue
+                elif 10 <= computer_num <= 99:
+                    first_num = str(computer_num)[0]
+                    print(f'    The number is two digit and starts with {first_num}\n')
+                    continue
+
+            if user_input == 'reveal':
+                print(computer_num)
+
+            try:
+                user_num = int(user_input)
+            except ValueError:
+                print('    Invalid value: Please choose a number between 1 and 100\n')
+                continue            
+
+            if difficulty == 'infinity':
+                if user_num == computer_num:
+                    user_chances_count += 1
+                    round_count += 1
+                    print('    WIN!')
+                    print('\n')
+                    break
+                else:
+                    user_chances_count +=1
+                    print('    LOSE!')
+                    print('\n')
+                    continue
+                    
+            if user_num == computer_num:
+                user_chances_count += 1
+                round_count += 1
+                print('    WIN!')
+                print('\n')
+                break
+            else:
+                if user_chances_count == user_chances:
+                    break
+                else:
+                    user_chances_count += 1
+                    print('    LOSE!')
+                    print('\n')
+                    continue
 
 def main():
     while True:
