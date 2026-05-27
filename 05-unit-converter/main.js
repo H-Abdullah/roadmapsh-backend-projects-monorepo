@@ -1,29 +1,19 @@
-import fs from 'fs';
+// import fs from 'fs';
+import { setupEventListener } from "./eventsListener.js";
+import { unitMultiplier } from "./unitMultiplier.js";
 
-function getMultiplierValues() {
-    try {
-        const data = fs.readFileSync('measurement_multiplier.json', 'utf-8');
-        return JSON.parse(data);
-    } catch (err) {
-        console.error(err);
-        process.exit(1);
-    }
+function convertUnit(data, category, currentValue, currentUnit, targetUnit) {
+    const currentMultiplier = data[category][currentUnit];
+    const targetMultiplier = data[category][targetUnit];
+
+    const result = currentValue / currentMultiplier * targetMultiplier;
+    return `${result.toFixed(2)}${targetUnit}`    
 }
 
-const data = getMultiplierValues()
-let category = 'length';
-let current_value = 1;
-let current_unit = 'm';
-let current_multiplier = data[category][current_unit];
-let target_value;
-let target_unit = 'cm';
-let target_multiplier = data[category][target_unit];
+const unitCategory = 'length';
+const currentValue = 30;
+const currentUnit = 'km';
+const targetUnit = 'm';
 
-function unitConverter(current_value, current_multiplier, target_multiplier, target_unit) {
-    const result = current_value / current_multiplier * target_multiplier;
-    return `${result.toFixed(2)}${target_unit}`
-}
-
-target_value = unitConverter(current_value, current_multiplier, target_multiplier, target_unit);
-
-console.log(target_value);
+setupEventListener();
+console.log(convertUnit(unitMultiplier, unitCategory, currentValue, currentUnit, targetUnit));
