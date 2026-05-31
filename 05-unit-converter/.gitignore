@@ -1,2 +1,5 @@
 # non-related personal files such as notes, mind map, etc
 .local/
+
+# general
+node_modules/
