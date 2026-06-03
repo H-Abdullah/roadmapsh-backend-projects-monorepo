@@ -1,10 +1,9 @@
-export function setupEventListener() {
+export default function setupEventListener() {
     const length_tab_btn = document.querySelector('.length-tab-btn');
     const weight_tab_btn = document.querySelector('.tab-button.weight-tab-btn');
     const temperature_tab_btn = document.querySelector('.tab-button.temperature-tab-btn');
 
     const length_tab = document.querySelector('.length-tab');
-    console.log(length_tab);
     const weight_tab = document.querySelector('.weight-tab');
     const temperature_tab = document.querySelector('.temperature-tab');
 

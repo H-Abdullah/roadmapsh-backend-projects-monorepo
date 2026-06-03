@@ -1,4 +1,4 @@
-import unitMultiplier from "../data/unitMultiplier"
+import unitMultiplier from "../data/unitMultiplier.js"
 
 export default function convertUnit(unitCategory, currentValue, currentUnit, targetUnit) {
     const currentUnitMultiplier = unitMultiplier[unitCategory][currentUnit];

@@ -1,5 +1,5 @@
 import express from 'express';
-import converterUnit from './routes/converter-routes';
+import converterUnit from './routes/converter-routes.js';
 
 const app = express();
 const PORT = 3000;
