@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "backend-watch": "nodemon server.js",
+    "frontend-watch": "browser-sync start --proxy localhost:3000 --port 3001 --files \"public/**/*\"",
+    "dev": "concurrently \"npm:backend-watch\" \"npm:frontend-watch\""
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +16,8 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "concurrently": "^8.2.2",
     "nodemon": "^3.1.14"
   }
 }
