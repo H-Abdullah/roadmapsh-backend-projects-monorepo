@@ -1,5 +1,6 @@
 import express from 'express';
 import htmlGenerator from './services/html-generator.js';
+import formGenerator from './services/form-generator.js';
 
 const app = express();
 const PORT = 3000;
@@ -12,6 +13,10 @@ app.get('/', (req, res) => {
 
 app.get('/admin', (req, res) => {
     res.send('<h1>You are now in admin area</h1>');
+})
+
+app.get('/admin/add', (req, res) => {
+    res.send(formGenerator());
 })
 
 app.listen(PORT, () => {

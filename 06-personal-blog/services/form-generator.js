@@ -1,12 +1,12 @@
-export default formGenerator() {
+export default function formGenerator() {
     return(`
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="form.css">
-        <script type="module" src="form.js" defer></script>
+        <link rel="stylesheet" href="/css/form.css">
+        <script type="module" src="/js/form.js" defer></script>
         <title>Add new article</title>
     </head>
     <body>
