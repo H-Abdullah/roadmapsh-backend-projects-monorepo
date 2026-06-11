@@ -12,7 +12,8 @@ export default function htmlGenerator() {
         <body>
             <div class="main">
                 <nav>
-                    <h1>Personal Blog</h1>
+                    <h1 class="nav-title">Personal Blog</h1>
+                    <a class="login-btn" href="/admin">login</a>
                 </nav>
                 <div class="articles">
                     <div class="article">

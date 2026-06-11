@@ -1,0 +1,92 @@
+/* global */
+
+html {
+    height: 100vh;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a,
+a:link,
+a:visited,
+a:active {
+    color: black;
+    text-decoration: none;
+}
+
+/* start  */
+
+.main {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title-field {
+    flex: 0 0 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    letter-spacing: 1px;
+}
+
+.title-field div {
+    position: absolute;
+    top: 40px;
+    left: 165px;
+}
+
+.title-field a {
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-transform: lowercase;
+}
+
+.title-field a::before {
+    content: '←';
+    padding-right: 5px;
+}
+
+.title-field a:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    margin-bottom: 0.2rem;
+}
+
+#article-content {
+    resize: none;
+}
+
+#article-title,
+#article-content {
+    padding: 5px 10px;
+    font-size: 1rem;
+}
+
+.submit-btn button {
+    height: 40px;
+    width: 80px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
