@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/admin', (req, res) => {
-    res.send('<h1>You are now in admin area</h1>');
+    res.send(htmlGenerator(true));
 })
 
 app.get('/admin/add', (req, res) => {
