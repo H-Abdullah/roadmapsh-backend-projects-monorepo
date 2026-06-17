@@ -3,3 +3,7 @@
 
 # npm packages
 node_modules/
+
+# articles data
+data/
+
