@@ -33,7 +33,7 @@ export default function htmlGenerator(isAdmin = false) {
     : ` <div class="article-container">
             <div class="article">
                 <div class="article-name">
-                    <p>Article 1</p>
+                    <p>Article 2</p>
                 </div>
                 <div class="article-date">
                     <p>Date 1</p>

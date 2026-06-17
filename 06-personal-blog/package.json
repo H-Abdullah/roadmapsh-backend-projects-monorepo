@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "backend-watch": "nodemon server.js",
-    "frontend-watch": "browser-sync start --proxy localhost:3000 --port 3001 --files \"public/**/*\" \"services/html-generator.js\"",
+    "frontend-watch": "browser-sync start --proxy localhost:3000 --port 3001 --files \"public/**/*\"",
     "dev": "concurrently \"npm:backend-watch\" \"npm:frontend-watch\""
   },
   "author": "",
