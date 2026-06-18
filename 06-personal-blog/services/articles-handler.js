@@ -2,6 +2,7 @@ import { ARTICLE_JSON_PATH } from "../utils/paths.js";
 import { readFile, writeFile } from "node:fs/promises";
 import { writeFileSync } from "node:fs";
 import convertTitleToSlug from "../utils/convert-title-to-slug.js";
+import getCurrDate from "../utils/get-date.js";
 
 
 function resetJSON() {
@@ -35,6 +36,7 @@ async function saveArticle(title, content) {
         slug: convertTitleToSlug(title),
         title: title,
         content: content,
+        date: getCurrDate()
     }
 
     try {
@@ -48,4 +50,5 @@ async function saveArticle(title, content) {
 
 export {
     saveArticle,
+    readJSON,
 }

@@ -1,28 +1,34 @@
-export default function htmlGenerator(isAdmin = false) {
+import { readJSON } from "./articles-handler.js";
 
-    const adminCSS = isAdmin
+function adminCSS(isAdmin) {
+    return isAdmin
     ? '<link rel="stylesheet" href="/css/admin.css">'
     : '';
+}
 
-    const adminGreeting = isAdmin
+function adminGreeting(isAdmin) {
+    return isAdmin
     ? '<p>Welcome User</p>'
     : '<a class="login-btn" href="/admin">login</a>';
+}
 
-    const adminNewArticleBtn = isAdmin
+function adminNewArticleBtn(isAdmin) {
+    return isAdmin
     ? ` <div class="add-new-article-btn">
             <a href="/admin/add">Add new article</a>
         </div>`
     : '';
+}
 
-    const adminArticle = isAdmin
-    // probably use function later to pass arg 
+function adminArticle(isAdmin, title, date) {
+    return isAdmin
     ? ` <div class='article-container'> 
             <div class="article">
                 <div class="article-name">
-                    <p>Article 1</p>
+                    <p>${title}</p>
                 </div>
                 <div class="article-date">
-                    <p>Date 1</p>
+                    <p>${date}</p>
                 </div>
             </div>
             <div class="edit-delete-btn">
@@ -33,13 +39,32 @@ export default function htmlGenerator(isAdmin = false) {
     : ` <div class="article-container">
             <div class="article">
                 <div class="article-name">
-                    <p>Article 2</p>
+                    <p>${title}</p>
                 </div>
                 <div class="article-date">
-                    <p>Date 1</p>
+                    <p>${date}</p>
                 </div>
             </div>
-        </div>`   
+        </div>` 
+}
+
+async function articlesLoader(isAdmin) {
+    const articlesData = await readJSON();
+    const tempArr = [];
+
+    if (articlesData.length <= 0) {
+        return 'No articles available'
+    }
+
+    Array.from(articlesData).forEach(dt => {
+        tempArr.push(adminArticle(isAdmin, dt.title, dt.date))
+    })
+        
+    return tempArr.join('');
+}
+
+export default async function htmlGenerator(isAdmin = false) {
+    const artc = await articlesLoader(isAdmin);
 
     return(`
         <!DOCTYPE html>
@@ -51,7 +76,7 @@ export default function htmlGenerator(isAdmin = false) {
             <link rel="stylesheet" href="/css/reset.css">
             <link rel="stylesheet" href="/css/global.css">
             <link rel="stylesheet" href="style.css">
-            ${adminCSS}
+            ${adminCSS(isAdmin)}
             <title>Personal Blog</title>
         </head>
         <body>
@@ -60,14 +85,11 @@ export default function htmlGenerator(isAdmin = false) {
                     <h1 class="nav-title">
                         <a href="/">Personal Blog</a>
                     </h1>
-                    ${adminGreeting}
+                    ${adminGreeting(isAdmin)}
                 </nav>
-                ${adminNewArticleBtn}
+                ${adminNewArticleBtn(isAdmin)}
                 <div class="articles">
-                    ${Array.from({ length: 10 })
-                        .map(() => adminArticle)
-                        .join('')
-                    }
+                    ${artc}
                 </div>
             </div>
         </body>

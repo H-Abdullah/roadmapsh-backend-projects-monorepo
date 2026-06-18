@@ -13,12 +13,14 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.get('/', (req, res) => {
-    res.send(htmlGenerator());
+app.get('/', async (req, res) => {
+    const html = await htmlGenerator();
+    res.send(html);
 })
 
-app.get('/admin', (req, res) => {
-    res.send(htmlGenerator(true));
+app.get('/admin', async (req, res) => {
+    const html = await htmlGenerator(true);
+    res.send(html);
 })
 
 app.get('/admin/add', (req, res) => {
