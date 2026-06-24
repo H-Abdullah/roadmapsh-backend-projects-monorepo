@@ -12,8 +12,11 @@ function createDir() {
 }
 
 function setupJSON() {
+
     if (!existsSync(ARTICLE_JSON_PATH)) {
-        writeFileSync(ARTICLE_JSON_PATH, "[]");
+        writeFileSync(
+            ARTICLE_JSON_PATH, 
+            JSON.stringify(template, null, 4))
     };
 }
 
