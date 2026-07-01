@@ -25,6 +25,7 @@ router.post('/article/publish', async (req, res) => {
     const title = req.body.articleTitle;
     const content = req.body.articleContent;
 
+    const sanitizedContent = sanitize
     await saveArticle({ 
         title, 
         content 

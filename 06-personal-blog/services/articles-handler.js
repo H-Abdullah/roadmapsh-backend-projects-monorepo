@@ -85,6 +85,19 @@ async function extractArticleData(id) {
     return { title, content };
 }
 
+async function extractArticleDataUsingSlug(slug) {
+    const data = await readJSON();
+    let title = '';
+    let content = '';
+    for (const item of data.articles) {
+        if (slug === item.slug) {
+            title = item.title;
+            content = item.content;
+        }
+    }
+    return { title, content };
+}
+
 
 // =============== Private Helper - Internal Usage ===============
 async function writeJSON(data) {
@@ -94,6 +107,10 @@ async function writeJSON(data) {
     } catch (err) {
         console.error(`${err}: Something wrong when trying to save file`);
     }
+}
+
+function sanitizeContent(content) {
+    const splittedContent = content.trim().split(/\r?\n\s*\r?\n/);
 }
 
 
@@ -117,5 +134,6 @@ export {
     editArticle,
     deleteArticle,
     readJSON,
-    extractArticleData
+    extractArticleData,
+    extractArticleDataUsingSlug
 }

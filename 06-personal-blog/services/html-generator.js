@@ -21,41 +21,40 @@ function adminNewArticleBtn(isAdmin) {
 }
 
 function adminArticle({
-    isAdmin= false,
-    title= '',
-    date= '',
-    id= ''
+    isAdmin = false,
+    slug = '',
+    title = '',
+    date = '',
+    id = ''
 } = {}) {
-    // console.log(`
-    //     isAdmin:${isAdmin},
-    //     title:${title},
-    //     date:${date},
-    //     id:${id}`);
-
     return isAdmin
         ? ` <div class='article-container'> 
-            <div class="article">
-                <div class="article-name">
-                    <p>${title}</p>
+            <a href="/article/${slug}?from=admin">
+                <div class="article">
+                    <div class="article-name">
+                        <p>${title}</p>
+                    </div>
+                    <div class="article-date">
+                        <p>${date}</p>
+                    </div>
                 </div>
-                <div class="article-date">
-                    <p>${date}</p>
-                </div>
-            </div>
+            </a>
             <div class="edit-delete-btn">
                 <a class="edit-btn" href="/admin/article/${id}/edit">Edit</a>
                 <a class="delete-btn" href="/admin/article/${id}/delete">Delete</a>
             </div>
         </div>`
         : ` <div class="article-container">
-            <div class="article">
-                <div class="article-name">
-                    <p>${title}</p>
+            <a href="/article/${slug}?from=home">
+                <div class="article">
+                    <div class="article-name">
+                        <p>${title}</p>
+                    </div>
+                    <div class="article-date">
+                        <p>${date}</p>
+                    </div>
                 </div>
-                <div class="article-date">
-                    <p>${date}</p>
-                </div>
-            </div>
+            </a>
         </div>`
 }
 
@@ -70,6 +69,7 @@ async function articlesLoader(isAdmin) {
     Array.from(data.articles).forEach(dt => {
         tempArr.push(adminArticle({
             isAdmin: isAdmin,
+            slug: dt.slug,
             title: dt.title,
             date: dt.date,
             id: dt.id

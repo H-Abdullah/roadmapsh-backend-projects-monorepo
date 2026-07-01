@@ -42,6 +42,7 @@ export default function formGenerator({
                             id="article-content" 
                             cols="100" 
                             rows="15"
+                            placeholder="Press 'Enter' to make paragraph"
                         >${escapeHTML(content)}</textarea>
                     </div>
                     <div class="submit-btn">

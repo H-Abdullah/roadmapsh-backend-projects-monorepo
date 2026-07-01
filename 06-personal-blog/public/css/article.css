@@ -1,0 +1,71 @@
+.main {
+    min-height: 100vh;
+}
+
+.main > div {
+    min-height: inherit;
+    display: flex;
+    flex-direction: column;
+    padding: 0 5rem;
+}
+
+nav {
+    flex: 0 0 80px;
+    display: flex;
+    align-items: center;
+}
+
+.back-btn a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+}
+
+.back-btn > a::before {
+    content: '←';
+    padding-right: 3px;
+}
+
+.back-btn > a:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.title {
+    flex: 0 0 120px;
+}
+
+.title > h1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    padding: 3rem 0;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+}
+
+.content > p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3rem;
+}
+
+
+/* nav {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+.title > h1 {
+    background-color: rgba(0, 255, 0, 0.5);
+}
+.content > p {
+    background-color: rgba(0, 0, 255, 0.5);
+} */

@@ -30,6 +30,10 @@
     gap: 10px;
 }
 
+.article-container > a {
+    flex: 1;
+}
+
 .article {
     flex: 1;
     display: flex;
